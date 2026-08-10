@@ -211,10 +211,40 @@ export default function CreateEventPage() {
               rules={[
                 {
                   validator: async (_, participants) => {
+                    // 1. Kiểm tra số lượng người tham gia tối thiểu
                     if (!participants || participants.length < 3) {
                       return Promise.reject(
                         new Error(
-                          "The more people, the more fun! At least 3 participants required.",
+                          "The more the merrier! At least 3 participants required.",
+                        ),
+                      );
+                    }
+
+                    // 2. Kiểm tra xem có người tham gia nào bị trống tên hoặc email không
+                    const isAnyFieldEmpty = participants.some(
+                      (p: { name: string; email: string }) =>
+                        !p || !p.name || !p.email,
+                    );
+
+                    if (isAnyFieldEmpty) {
+                      return Promise.reject(
+                        new Error(
+                          "Please fill in the name and email for all participants.",
+                        ),
+                      );
+                    }
+
+                    // 3. Kiểm tra định dạng email hợp lệ
+                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    const isAnyEmailInvalid = participants.some(
+                      (p: { name: string; email: string }) =>
+                        !emailRegex.test(p.email),
+                    );
+
+                    if (isAnyEmailInvalid) {
+                      return Promise.reject(
+                        new Error(
+                          "There is an invalid email address. Please check again.",
                         ),
                       );
                     }
@@ -245,7 +275,9 @@ export default function CreateEventPage() {
                         <Form.Item
                           {...field}
                           name={[field.name, "name"]}
-                          rules={[{ required: true, message: " Input name" }]}
+                          rules={[
+                            { required: true, message: "Please enter a name" },
+                          ]}
                           style={{ margin: 0, flex: 1 }}
                         >
                           <Input size="large" placeholder="Participant Name" />
@@ -254,12 +286,15 @@ export default function CreateEventPage() {
                           {...field}
                           name={[field.name, "email"]}
                           rules={[
-                            { required: true, message: "Input email" },
-                            { type: "email", message: "Email not valid" },
+                            {
+                              required: true,
+                              message: "Please enter an email",
+                            },
+                            { type: "email", message: "Email is not valid" },
                           ]}
                           style={{ margin: 0, flex: 2 }}
                         >
-                          <Input size="large" placeholder="Email" />
+                          <Input size="large" placeholder="Participant Email" />
                         </Form.Item>
                         {fields.length > 3 && (
                           <Button
