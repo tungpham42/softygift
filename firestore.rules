@@ -1,0 +1,11 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Toàn bộ truy cập đi qua Netlify Functions bằng Firebase Admin SDK
+    // (Admin SDK bỏ qua rules này). Chặn hoàn toàn truy cập trực tiếp từ client
+    // để không ai có thể đọc danh sách người chơi hoặc suy ra ai tặng ai.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
