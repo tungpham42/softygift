@@ -10,7 +10,7 @@ body {
     Roboto,
     sans-serif;
   /* Warm, friendly mesh-like gradient background */
-  background: linear-gradient(135deg, #fff0f0 0%, #ffe4e1 100%);
+  background: #ffe4e1;
   color: #4a4a4a;
   -webkit-font-smoothing: antialiased;
 }
