@@ -245,7 +245,7 @@ export default function CreateEventPage() {
                         <Form.Item
                           {...field}
                           name={[field.name, "name"]}
-                          rules={[{ required: true, message: "Nhập tên" }]}
+                          rules={[{ required: true, message: " Input name" }]}
                           style={{ margin: 0, flex: 1 }}
                         >
                           <Input size="large" placeholder="Participant Name" />
